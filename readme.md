@@ -470,7 +470,214 @@ Prosedur InsertFactPembayaranSpp digunakan untuk mengisi tabel fact_pembayaran_s
 
 ```
 1. Membuka kursor untuk setiap siswa.
-2. Untuk setiap siswa, prosedur ini memilih entri spp yang berkaitan dengan siswa tersebut. 3. Prosedur ini menghasilkan status pembayaran acak (dibayar atau belum dibayar).
-3. Prosedur ini memasukkan data ke dalam tabel fact_pembayaran_spp dengan spp_id dan status pembayaran yang telah dipilih.
+2. Untuk setiap siswa, prosedur ini memilih entri spp yang berkaitan dengan siswa tersebut.
+3. Prosedur ini menghasilkan status pembayaran acak (dibayar atau belum dibayar).
+4. Prosedur ini memasukkan data ke dalam tabel fact_pembayaran_spp dengan spp_id dan status pembayaran yang telah dipilih.
+5. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
+```
+
+# Database Procedure Script
+
+File `7_procedure_for_absen.sql` berisi skrip SQL untuk membuat prosedur yang mengisi tabel `absen` dengan data acak.
+
+## Query Overview
+
+### Procedure: InsertAbsensiByDate
+
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE InsertAbsensiByDate(IN _tanggal DATE)
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE _siswa_id INT;
+    DECLARE _status ENUM('Hadir', 'Izin', 'Sakit', 'Alpha');
+    DECLARE rand_status INT;
+
+    DECLARE siswa_cursor CURSOR FOR SELECT siswa_id FROM siswa;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN siswa_cursor;
+
+    insert_loop: LOOP
+        FETCH siswa_cursor INTO _siswa_id;
+        IF done THEN
+            LEAVE insert_loop;
+        END IF;
+
+        -- Generate a random number between 1 and 4 for random status
+        SET rand_status = FLOOR(1 + RAND() * 4);
+
+        -- Determine the status based on the random number
+        CASE
+            WHEN rand_status = 1 THEN SET _status = 'Hadir';
+            WHEN rand_status = 2 THEN SET _status = 'Izin';
+            WHEN rand_status = 3 THEN SET _status = 'Sakit';
+            ELSE SET _status = 'Alpha';
+        END CASE;
+
+        -- Insert the attendance record for the student with the random status
+        INSERT INTO absen (tanggal, siswa_id, status) VALUES (_tanggal, _siswa_id, _status);
+    END LOOP;
+
+    CLOSE siswa_cursor;
+END$$
+
+DELIMITER ;
+```
+
+Prosedur InsertAbsensiByDate digunakan untuk mengisi tabel absen dengan data acak berdasarkan tanggal yang diberikan. Prosedur ini melakukan hal berikut:
+
+```
+1. Membuka kursor untuk setiap siswa.
+2. Untuk setiap siswa, prosedur ini menghasilkan status kehadiran acak (Hadir, Izin, Sakit, Alpha).
+3. Prosedur ini memasukkan data ke dalam tabel absen dengan tanggal, siswa_id, dan status kehadiran yang telah dipilih.
 4. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
 ```
+
+# Database Procedure Script
+
+File `7_procedure_for_absen.sql` berisi skrip SQL untuk membuat prosedur yang mengisi tabel `absen` dengan data acak berdasarkan tanggal yang diberikan.
+
+## Query Overview
+
+### Procedure: InsertAbsensiByDate
+
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE InsertAbsensiByRange()
+BEGIN
+    DECLARE tanggal_mulai DATE;
+    DECLARE tanggal_selesai DATE;
+
+    SET tanggal_mulai = '2023-04-01';
+    SET tanggal_selesai = '2023-04-10';
+
+    WHILE tanggal_mulai <= tanggal_selesai DO
+        CALL InsertAbsensiByDate(tanggal_mulai);
+        SET tanggal_mulai = DATE_ADD(tanggal_mulai, INTERVAL 1 DAY);
+    END WHILE;
+END$$
+
+DELIMITER ;
+```
+
+Prosedur InsertAbsensiByDate digunakan untuk mengisi tabel absen dengan data acak berdasarkan tanggal yang diberikan. Prosedur ini melakukan hal berikut:
+
+```
+1. Membuka kursor untuk setiap siswa.
+2. Untuk setiap siswa, prosedur ini menghasilkan status kehadiran acak (Hadir, Izin, Sakit, Alpha).
+3. Prosedur ini memasukkan data ke dalam tabel absen dengan tanggal, siswa_id, dan status kehadiran yang telah dipilih.
+4. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
+```
+
+# Database Procedure Script
+
+File `8_procedure_for_fact_absen.sql` berisi skrip SQL untuk membuat prosedur yang menghitung dan memperbarui atau memasukkan jumlah absen 'Hadir' dan absen 'Tidak Hadir' untuk setiap siswa.
+
+## Query Overview
+
+### Procedure: UpdateOrInsertFactAbsenSiswa
+
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE UpdateFactAbsenSiswa()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE current_siswa_id INT;
+    DECLARE hadir_count INT;
+    DECLARE tidak_hadir_count INT;
+
+    -- Cursor to iterate over each student
+    DECLARE siswa_cursor CURSOR FOR SELECT siswa_id FROM siswa;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN siswa_cursor;
+
+    -- Loop through all students
+    read_loop: LOOP
+        FETCH siswa_cursor INTO current_siswa_id;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Count the number of 'Hadir' statuses for the current student
+        SELECT COUNT(*) INTO hadir_count
+        FROM absen
+        WHERE siswa_id = current_siswa_id AND status = 'Hadir';
+
+        -- Count the number of statuses other than 'Hadir' for the current student
+        SELECT COUNT(*) INTO tidak_hadir_count
+        FROM absen
+        WHERE siswa_id = current_siswa_id AND status <> 'Hadir';
+
+        -- Check if the current student already has a record in the fact_absen_siswa table
+        IF EXISTS(SELECT 1 FROM fact_absen_siswa WHERE siswa_id = current_siswa_id) THEN
+            -- Update if exists
+            UPDATE fact_absen_siswa
+            SET total_absen_hadir = hadir_count,
+                total_absen_tidak_hadir = tidak_hadir_count
+            WHERE siswa_id = current_siswa_id;
+        ELSE
+            -- Insert if not exists
+            INSERT INTO fact_absen_siswa (siswa_id, total_absen_hadir, total_absen_tidak_hadir)
+            VALUES (current_siswa_id, hadir_count, tidak_hadir_count);
+        END IF;
+
+    END LOOP;
+
+    CLOSE siswa_cursor;
+END$$
+
+DELIMITER ;
+```
+
+Prosedur UpdateOrInsertFactAbsenSiswa digunakan untuk menghitung jumlah absen 'Hadir' dan 'Tidak Hadir' untuk setiap siswa dan memperbarui atau memasukkan data tersebut ke dalam tabel fact_absen_siswa. Prosedur ini melakukan hal berikut:
+
+```
+1. Membuka kursor untuk setiap siswa.
+2. Untuk setiap siswa, prosedur ini menghitung jumlah absen 'Hadir' dan 'Tidak Hadir' dari tabel absen.
+3. Jika siswa tersebut sudah memiliki catatan di tabel fact_absen_siswa, prosedur ini memperbarui catatan tersebut dengan jumlah absen 'Hadir' dan 'Tidak Hadir' yang baru.
+4. Jika siswa tersebut belum memiliki catatan di tabel fact_absen_siswa, prosedur ini memasukkan siswa_id, jumlah absen 'Hadir', dan jumlah absen 'Tidak Hadir' ke dalam tabel tersebut.
+5. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
+```
+
+# Database Procedure Execution Script
+
+File `9_run_all_procedure.sql` berisi skrip SQL untuk menjalankan semua prosedur yang telah dibuat sebelumnya.
+
+## Query Overview
+
+```sql
+CALL InsertRandomNilaiAkhirForAllStudents();
+
+CALL CalculateAndInsertAvgNilaiAkhir();
+
+CALL InsertFactPembayaranSpp();
+
+CALL InsertAbsensiByRange();
+
+CALL UpdateFactAbsenSiswa();
+```
+
+```
+Skrip ini menjalankan prosedur-prosedur berikut:
+
+1. `InsertRandomNilaiAkhirForAllStudents`: Mengisi tabel `nilai_akhir_mata_pelajaran` dengan nilai acak untuk setiap siswa dan setiap mata pelajaran.
+
+2. `CalculateAndInsertAvgNilaiAkhir`: Menghitung rata-rata nilai akhir untuk setiap siswa dan memasukkannya ke dalam tabel `fact_avg_nilai_akhir`.
+
+3. `InsertFactPembayaranSpp`: Mengisi tabel `fact_pembayaran_spp` dengan data acak.
+
+4. `InsertAbsensiByRange`: Mengisi tabel `absen` dengan data acak berdasarkan rentang tanggal yang diberikan.
+
+5. `UpdateFactAbsenSiswa`: Menghitung jumlah absen 'Hadir' dan 'Tidak Hadir' untuk setiap siswa dan memperbarui atau memasukkan data tersebut ke dalam tabel `fact_absen_siswa`.
+```
+
+## How to Run
+
+1. Buka klien SQL Anda (misalnya, MySQL Workbench, phpMyAdmin, dsb.).
+2. Salin dan tempelkan query ini ke klien SQL Anda.
+3. Jalankan query.
