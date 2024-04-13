@@ -681,3 +681,146 @@ Skrip ini menjalankan prosedur-prosedur berikut:
 1. Buka klien SQL Anda (misalnya, MySQL Workbench, phpMyAdmin, dsb.).
 2. Salin dan tempelkan query ini ke klien SQL Anda.
 3. Jalankan query.
+
+# Database Table Creation and Procedure Script
+
+File `10_snowflake_table_perform_siswa.sql` berisi skrip SQL untuk membuat tabel `perform_siswa` dan prosedur `InsertIntoPerformSiswa`.
+
+## Query Overview
+
+### Table: perform_siswa
+
+```sql
+CREATE TABLE perform_siswa (
+    perform_siswa_id INT AUTO_INCREMENT PRIMARY KEY,
+    fact_pembayaran_spp_id INT,
+    fact_absen_siswa_id INT,
+    fact_avg_nilai_akhir_id INT,
+    siswa_id INT,
+    FOREIGN KEY (siswa_id) REFERENCES siswa(siswa_id),
+    FOREIGN KEY (fact_pembayaran_spp_id) REFERENCES fact_pembayaran_spp(fact_pembayaran_spp_id),
+    FOREIGN KEY (fact_absen_siswa_id) REFERENCES fact_absen_siswa(fact_absen_siswa_id),
+    FOREIGN KEY (fact_avg_nilai_akhir_id) REFERENCES fact_avg_nilai_akhir(fact_avg_nilai_akhir_id)
+);
+```
+
+Tabel perform_siswa dibuat untuk menyimpan performa siswa. Tabel ini memiliki kolom berikut:
+
+```
+- perform_siswa_id: ID unik untuk setiap baris dalam tabel.
+- fact_pembayaran_spp_id: ID dari tabel fact_pembayaran_spp yang berisi informasi tentang pembayaran SPP siswa.
+- fact_absen_siswa_id: ID dari tabel fact_absen_siswa yang berisi informasi tentang absensi siswa.
+- fact_avg_nilai_akhir_id: ID dari tabel fact_avg_nilai_akhir yang berisi informasi tentang nilai akhir rata-rata siswa.
+- siswa_id: ID siswa.
+```
+
+### Procedure: InsertIntoPerformSiswa
+
+```sql
+DELIMITER $$
+
+CREATE PROCEDURE InsertIntoPerformSiswa()
+BEGIN
+    DECLARE finished INT DEFAULT FALSE;
+    DECLARE current_siswa_id INT;
+    DECLARE current_fact_pembayaran_spp_id INT;
+    DECLARE current_fact_absen_siswa_id INT;
+    DECLARE current_fact_avg_nilai_akhir_id INT;
+
+    DECLARE siswa_cursor CURSOR FOR SELECT siswa_id FROM siswa;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
+
+    OPEN siswa_cursor;
+
+    -- Looping through each student in the siswa table
+    student_loop: LOOP
+        FETCH siswa_cursor INTO current_siswa_id;
+        IF finished THEN
+            LEAVE student_loop;
+        END IF;
+
+        -- Finding the corresponding fact_pembayaran_spp_id
+        SELECT fact_pembayaran_spp_id INTO current_fact_pembayaran_spp_id
+        FROM fact_pembayaran_spp
+        WHERE siswa_id = current_siswa_id
+        ORDER BY fact_pembayaran_spp_id DESC
+        LIMIT 1;
+
+        -- Finding the corresponding fact_absen_siswa_id
+        SELECT fact_absen_siswa_id INTO current_fact_absen_siswa_id
+        FROM fact_absen_siswa
+        WHERE siswa_id = current_siswa_id
+        ORDER BY fact_absen_siswa_id DESC
+        LIMIT 1;
+
+        -- Finding the corresponding fact_avg_nilai_akhir_id
+        SELECT fact_avg_nilai_akhir_id INTO current_fact_avg_nilai_akhir_id
+        FROM fact_avg_nilai_akhir
+        WHERE siswa_id = current_siswa_id
+        ORDER BY fact_avg_nilai_akhir_id DESC
+        LIMIT 1;
+
+        -- Inserting data into the perform_siswa table
+        INSERT INTO perform_siswa (siswa_id, fact_pembayaran_spp_id, fact_absen_siswa_id, fact_avg_nilai_akhir_id)
+        VALUES (current_siswa_id, current_fact_pembayaran_spp_id, current_fact_absen_siswa_id, current_fact_avg_nilai_akhir_id);
+
+    END LOOP;
+
+    CLOSE siswa_cursor;
+END$$
+
+DELIMITER ;
+
+CALL InsertIntoPerformSiswa();
+```
+
+Prosedur InsertIntoPerformSiswa digunakan untuk memasukkan data ke dalam tabel perform_siswa. Prosedur ini melakukan hal berikut:
+
+```
+1. Membuka kursor untuk setiap siswa.
+2. Untuk setiap siswa, prosedur ini mencari fact_pembayaran_spp_id, fact_absen_siswa_id, dan fact_avg_nilai_akhir_id yang berkaitan dengan siswa tersebut.
+3. Prosedur ini memasukkan siswa_id, fact_pembayaran_spp_id, fact_absen_siswa_id, dan fact_avg_nilai_akhir_id ke dalam tabel perform_siswa.
+4. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
+```
+
+### View: view_complete_perform_siswa
+
+```sql
+CREATE VIEW view_complete_perform_siswa AS
+SELECT
+    s.nama AS nama_siswa,
+    k.nama_kelas AS nama_kelas_siswa,
+    spp.jumlah AS spp_siswa,
+    spp.status AS status_spp,
+    avg_nilai.nilai_akhir AS avg_nilai_akhir,
+    absen.total_absen_hadir AS total_absen_hadir_siswa,
+    absen.total_absen_tidak_hadir AS total_absen_tidak_hadir_siswa
+FROM
+    perform_siswa ps
+INNER JOIN
+    siswa s ON ps.siswa_id = s.siswa_id
+INNER JOIN
+    kelas k ON s.kelas_id = k.kelas_id
+INNER JOIN
+    fact_pembayaran_spp f_spp ON ps.fact_pembayaran_spp_id = f_spp.fact_pembayaran_spp_id
+INNER JOIN
+    spp ON f_spp.spp_id = spp.spp_id
+INNER JOIN
+    fact_avg_nilai_akhir avg_nilai ON ps.fact_avg_nilai_akhir_id = avg_nilai.fact_avg_nilai_akhir_id
+INNER JOIN
+    fact_absen_siswa absen ON ps.fact_absen_siswa_id = absen.fact_absen_siswa_id;
+```
+
+View view_complete_perform_siswa dibuat untuk menyediakan tampilan lengkap tentang performa siswa. View ini menggabungkan data dari tabel perform_siswa, siswa, kelas, fact_pembayaran_spp, spp, fact_avg_nilai_akhir, dan fact_absen_siswa.
+
+View ini menampilkan kolom berikut:
+
+```
+- nama_siswa: Nama siswa.
+- nama_kelas_siswa: Nama kelas siswa.
+- spp_siswa: Jumlah SPP siswa.
+- status_spp: Status pembayaran SPP siswa.
+- avg_nilai_akhir: Nilai akhir rata-rata siswa.
+- total_absen_hadir_siswa: Total absen 'Hadir' siswa.
+- total_absen_tidak_hadir_siswa: Total absen 'Tidak Hadir' siswa.
+```
