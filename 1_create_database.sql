@@ -1,0 +1,2 @@
+CREATE DATABASE senior_high_school;
+USE senior_high_school;
