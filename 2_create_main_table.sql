@@ -79,6 +79,11 @@ CREATE TABLE fact_avg_nilai_akhir (
     siswa_id INT,
     nilai_akhir DECIMAL(10, 2),
     FOREIGN KEY (siswa_id) REFERENCES siswa(siswa_id)
+) PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50), 
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
 );
 
 CREATE TABLE fact_absen_siswa (
