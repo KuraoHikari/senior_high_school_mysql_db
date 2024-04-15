@@ -1,3 +1,5 @@
+-- LANJUT AJA KE FILE 12 KARENA DI 11 GAK ADA YANG SPESIAL + MASIH ORAK OREK
+
 CREATE TABLE siswa_replica (
     siswa_id INT AUTO_INCREMENT PRIMARY KEY,
     nama VARCHAR(100),
@@ -118,17 +120,24 @@ INSERT INTO fact_avg_nilai_akhir (siswa_id, nilai_akhir) VALUES (2, 60.00);
 -- );
 -- mending ulang dari awal :3 aokwowokw ga expext ada ginian aowkowkokwokwok
 
-SELECT * FROM fact_avg_nilai_akhir PARTITION (p2);
 
+USE USE senior_high_school;
 CREATE TABLE fact_avg_nilai_akhir_sync (
-    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
     siswa_id INT,
-    nilai_akhir DECIMAL(10, 2),
-    FOREIGN KEY (siswa_id) REFERENCES siswa(siswa_id)
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir),
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50), 
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
 );
 
+SELECT * FROM fact_avg_nilai_akhir PARTITION (p2);
+
 INSERT INTO fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
-SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
 FROM fact_avg_nilai_akhir
 WHERE nilai_akhir > 70
 ON DUPLICATE KEY UPDATE
@@ -139,13 +148,19 @@ nilai_akhir = VALUES(nilai_akhir);
 USE db_slave;
 
 CREATE TABLE fact_avg_nilai_akhir_sync (
-    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
     siswa_id INT,
-    nilai_akhir DECIMAL(10, 2)
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir),
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50), 
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
 );
 
 INSERT INTO db_slave.fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
-SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
 FROM senior_high_school.fact_avg_nilai_akhir
 WHERE nilai_akhir > 70
 ON DUPLICATE KEY UPDATE
