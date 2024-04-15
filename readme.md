@@ -343,7 +343,7 @@ INSERT INTO guru (nama, mata_pelajaran_id) VALUES ('Dewi Rahayu', 3);
 
 Ini memasukkan tiga guru: Budi Santoso, Anita Wijaya, dan Dewi Rahayu ke dalam tabel guru.
 
-### Guru
+### Siswa
 
 ```sql
 INSERT INTO siswa (nama, alamat, tanggal_lahir, kelas_id) VALUES ('John Doe', 'Jl. Merdeka No. 123', '2006-05-15', 1);
