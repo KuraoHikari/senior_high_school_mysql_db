@@ -943,3 +943,230 @@ alamat = VALUES(alamat),
 tanggal_lahir = VALUES(tanggal_lahir),
 kelas_id = VALUES(kelas_id);
 ```
+
+# Centralized Sharding - 14_sharding_terpusat.sql
+
+File `14_sharding_terpusat.sql` ini berisi skrip SQL untuk membuat sharding data yang lebih terpusat dan terorganisir. Sharding adalah teknik membagi data ke dalam beberapa tabel untuk meningkatkan kinerja dan skalabilitas.
+
+### Membuat Tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low`
+
+Kita membuat dua tabel, `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low`, sebagai tempat untuk menyimpan data siswa yang di-shard berdasarkan nilai akhir mereka.
+
+```sql
+CREATE TABLE fact_avg_nilai_akhir_high (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+CREATE TABLE fact_avg_nilai_akhir_low (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+```
+
+### Membuat Tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low`
+
+Trigger ini dibuat di database `senior_high_school` untuk membagi data siswa ke `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` setiap kali ada penambahan data baru ke tabel `fact_avg_nilai_akhir`.
+
+```sql
+DELIMITER //
+CREATE TRIGGER sharding_after_insert AFTER INSERT ON fact_avg_nilai_akhir FOR EACH ROW
+BEGIN
+    IF NEW.nilai_akhir > 70 THEN
+        INSERT INTO fact_avg_nilai_akhir_high (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    ELSE
+        INSERT INTO fact_avg_nilai_akhir_low (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    END IF;
+END //
+DELIMITER ;
+```
+
+### Sinkronisasi Data Awal
+
+Untuk memastikan data di tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` sama dengan tabel `fact_avg_nilai_akhir`, kita melakukan sinkronisasi data awal dengan perintah berikut:
+
+```sql
+INSERT INTO fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir > 70
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+INSERT INTO fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir < 71
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+```
+
+# Multi-Database Sharding - 15_sharding_mult.sql
+
+File `15_sharding_mult.sql` ini berisi skrip SQL untuk membuat sharding data yang lebih terpusat dan terorganisir di beberapa database. Sharding adalah teknik membagi data ke dalam beberapa tabel untuk meningkatkan kinerja dan skalabilitas.
+
+### Membuat Tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` di `db_slave`
+
+Kita membuat dua tabel, `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low`, di database `db_slave` sebagai tempat untuk menyimpan data siswa yang di-shard berdasarkan nilai akhir mereka.
+
+```sql
+USE db_slave;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+CREATE TABLE fact_avg_nilai_akhir_high (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+CREATE TABLE fact_avg_nilai_akhir_low (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+```
+
+### Membuat Trigger `sharding_after_insert_mult`
+
+Trigger ini dibuat di database `senior_high_school` untuk membagi data siswa ke `db_slave.fact_avg_nilai_akhir_high` dan `db_slave.fact_avg_nilai_akhir_low` setiap kali ada penambahan data baru ke tabel `fact_avg_nilai_akhir`.
+
+```sql
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+DELIMITER //
+CREATE TRIGGER sharding_after_insert_mult AFTER INSERT ON fact_avg_nilai_akhir FOR EACH ROW
+BEGIN
+    IF NEW.nilai_akhir > 70 THEN
+        INSERT INTO db_slave.fact_avg_nilai_akhir_high (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    ELSE
+        INSERT INTO db_slave.fact_avg_nilai_akhir_low (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    END IF;
+END //
+DELIMITER ;
+```
+
+### Sinkronisasi Data Awal
+
+Untuk memastikan data di tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` di `db_slave` sama dengan tabel `fact_avg_nilai_akhir` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
+
+```sql
+INSERT INTO db_slave.fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir > 70
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+INSERT INTO db_slave.fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir < 71
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+```
+
+# Data Partitioning and Synchronization - 16_partitioning_data_sync.sql
+
+File `16_partitioning_data_sync.sql` ini berisi skrip SQL untuk melakukan partisi data dan sinkronisasi data antara dua database. Partisi data adalah teknik membagi data ke dalam beberapa bagian untuk meningkatkan kinerja dan skalabilitas.
+
+### Membuat Tabel `fact_avg_nilai_akhir_sync` di `senior_high_school` dan `db_slave`
+
+Kita membuat tabel `fact_avg_nilai_akhir_sync` di kedua database. Tabel ini akan dipartisi berdasarkan nilai akhir siswa.
+
+```sql
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+CREATE TABLE fact_avg_nilai_akhir_sync (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
+    siswa_id INT,
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir)
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50),
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
+);
+
+USE db_slave;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+CREATE TABLE fact_avg_nilai_akhir_sync (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
+    siswa_id INT,
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir)
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50),
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
+);
+```
+
+### Sinkronisasi Data Awal
+
+Untuk memastikan data di tabel `fact_avg_nilai_akhir_sync` di kedua database sama dengan tabel `fact_avg_nilai_akhir` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
+
+```sql
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+INSERT INTO fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir > 10
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+INSERT INTO db_slave.fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir > 10
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+```
+
+### Query Data dari Partisi Tertentu
+
+Kita dapat melakukan query data dari partisi tertentu dengan perintah berikut:
+
+```sql
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
+
+USE db_slave;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
+```
+
+# Tentang Penulis
+
+Nama saya adalah Kurao Hikari, seorang pengembang perangkat lunak dengan pengalaman dalam berbagai teknologi dan bahasa pemrograman. Saya memiliki minat khusus dalam pengembangan web, basis data, dan teknologi cloud.
+
+Saya telah bekerja pada berbagai proyek, mulai dari aplikasi web skala kecil hingga sistem enterprise yang kompleks. Saya selalu berusaha untuk belajar dan mengembangkan keterampilan saya, dan saya sangat bersemangat tentang berbagi pengetahuan saya dengan komunitas.
+
+## Kontak
+
+Jika Anda memiliki pertanyaan atau ingin berdiskusi tentang proyek atau kode ini, jangan ragu untuk menghubungi saya:
+
+- Email: kuraoindra@gmail.com / dewaindra705@gmail.com
+- GitHub: KuraoHikari
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah [Lisensi MIT](LICENSE).
+
+## Kontribusi
+
+Kontribusi selalu diterima! Jika Anda memiliki saran, masalah, atau pertanyaan, silakan buat issue atau pull request.
+
+Terima kasih telah mengunjungi repositori ini!
