@@ -3,14 +3,14 @@ USE senior_high_school;
 CREATE TABLE fact_avg_nilai_akhir_high (
     fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
     siswa_id INT,
-    nilai_akhir DECIMAL(10, 2),
+    nilai_akhir DECIMAL(10, 2)
 );
 
 
 CREATE TABLE fact_avg_nilai_akhir_low (
     fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
     siswa_id INT,
-    nilai_akhir DECIMAL(10, 2),
+    nilai_akhir DECIMAL(10, 2)
 );
 
 DELIMITER //

@@ -501,3 +501,201 @@ INNER JOIN
 INNER JOIN 
     fact_absen_siswa absen ON ps.fact_absen_siswa_id = absen.fact_absen_siswa_id;
 
+USE senior_high_school;
+CREATE TABLE siswa_replica (
+    siswa_id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    alamat VARCHAR(255),
+    tanggal_lahir DATE,
+    kelas_id INT,
+    INDEX nama_idx (nama)
+);
+
+DELIMITER //
+CREATE TRIGGER replikasi_siswa AFTER INSERT ON siswa
+FOR EACH ROW
+BEGIN
+    INSERT INTO siswa_replica (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+    VALUES (NEW.siswa_id, NEW.nama, NEW.alamat, NEW.tanggal_lahir, NEW.kelas_id);
+END //
+DELIMITER ;
+
+INSERT INTO siswa_replica (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+SELECT siswa_id, nama, alamat, tanggal_lahir, kelas_id
+FROM siswa
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nama = VALUES(nama),
+alamat = VALUES(alamat),
+tanggal_lahir = VALUES(tanggal_lahir),
+kelas_id = VALUES(kelas_id);
+
+CREATE DATABASE db_slave;
+USE db_slave;
+CREATE TABLE siswa (
+    siswa_id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    alamat VARCHAR(255),
+    tanggal_lahir DATE,
+    kelas_id INT,
+    INDEX nama_idx (nama)
+);
+
+
+USE senior_high_school;
+DELIMITER //
+CREATE TRIGGER Replikasi_After_Insert AFTER INSERT ON siswa FOR EACH ROW
+BEGIN
+    INSERT INTO db_slave.siswa (siswa_id, nama, alamat, tanggal_lahir, kelas_id) 
+    VALUES (NEW.siswa_id, NEW.nama, NEW.alamat, NEW.tanggal_lahir, NEW.kelas_id);
+END //
+DELIMITER ;
+
+INSERT INTO db_slave.siswa (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+SELECT siswa_id, nama, alamat, tanggal_lahir, kelas_id
+FROM senior_high_school.siswa
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nama = VALUES(nama),
+alamat = VALUES(alamat),
+tanggal_lahir = VALUES(tanggal_lahir),
+kelas_id = VALUES(kelas_id);
+
+USE senior_high_school;
+
+CREATE TABLE fact_avg_nilai_akhir_high (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+
+CREATE TABLE fact_avg_nilai_akhir_low (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+DELIMITER //
+CREATE TRIGGER sharding_after_insert AFTER INSERT ON fact_avg_nilai_akhir FOR EACH ROW
+BEGIN
+    IF NEW.nilai_akhir > 70 THEN
+        INSERT INTO fact_avg_nilai_akhir_high (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    ELSE
+        INSERT INTO fact_avg_nilai_akhir_low (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    END IF;
+END //
+DELIMITER ;
+
+INSERT INTO fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir > 70
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+INSERT INTO fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir < 71
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+USE db_slave;
+
+CREATE TABLE fact_avg_nilai_akhir_high (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+
+CREATE TABLE fact_avg_nilai_akhir_low (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT PRIMARY KEY,
+    siswa_id INT,
+    nilai_akhir DECIMAL(10, 2)
+);
+
+USE senior_high_school;
+
+DELIMITER //
+CREATE TRIGGER sharding_after_insert_mult AFTER INSERT ON fact_avg_nilai_akhir FOR EACH ROW
+BEGIN
+    IF NEW.nilai_akhir > 70 THEN
+        INSERT INTO db_slave.fact_avg_nilai_akhir_high (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    ELSE
+        INSERT INTO db_slave.fact_avg_nilai_akhir_low (siswa_id, nilai_akhir) VALUES (NEW.siswa_id, NEW.nilai_akhir);
+    END IF;
+END //
+DELIMITER ;
+
+INSERT INTO db_slave.fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir > 70
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+INSERT INTO db_slave.fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir < 71
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+USE USE senior_high_school;
+CREATE TABLE fact_avg_nilai_akhir_sync (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
+    siswa_id INT,
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir)
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50), 
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
+);
+
+
+
+INSERT INTO fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
+FROM fact_avg_nilai_akhir
+WHERE nilai_akhir > 10
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
+
+
+USE db_slave;
+
+CREATE TABLE fact_avg_nilai_akhir_sync (
+    fact_avg_nilai_akhir_id INT AUTO_INCREMENT,
+    siswa_id INT,
+    nilai_akhir INT,
+    PRIMARY KEY (fact_avg_nilai_akhir_id,nilai_akhir)
+)PARTITION BY RANGE (nilai_akhir)(
+PARTITION PO VALUES LESS THAN (25),
+PARTITION p1 VALUES LESS THAN (50), 
+PARTITION P2 VALUES LESS THAN (75),
+PARTITION P3 VALUES LESS THAN MAXVALUE
+);
+
+USE USE senior_high_school;
+
+INSERT INTO db_slave.fact_avg_nilai_akhir_sync (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+SELECT fact_avg_nilai_akhir_id, siswa_id, CAST(nilai_akhir AS SIGNED) AS nilai_akhir
+FROM senior_high_school.fact_avg_nilai_akhir
+WHERE nilai_akhir > 10
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nilai_akhir = VALUES(nilai_akhir);
+
+USE db_slave;
+SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
