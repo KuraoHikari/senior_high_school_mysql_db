@@ -1,3 +1,70 @@
+# Table of Contents
+
+- [How to Run](#how-to-run)
+- [Database Creation Script](#database-creation-script)
+- [Database Table Creation Script](#database-table-creation-script) - [Tabel Siswa](#tabel-siswa) - [Tabel Guru](#tabel-guru) - [Tabel Mata Pelajaran](#tabel-mata-pelajaran) - [Tabel Absen](#tabel-absen) - [Tabel SPP](#tabel-spp) - [Tabel Tugas](#tabel-tugas) - [Tabel Kelas](#tabel-kelas) - [Tabel Nilai Akhir Mata Pelajaran](#tabel-nilai-akhir-mata-pelajaran) - [Tabel Fact Pembayaran SPP](#tabel-fact-pembayaran-spp) - [Tabel Fact Avg Nilai Akhir](#tabel-fact-avg-nilai-akhir) - [Tabel Fact Absen Siswa](#tabel-fact-absen-siswa) -[Database Procedures, Functions, Views, and Triggers](#database-procedures-functions-views-and-triggers) - [Trigger: after_siswa_insert](#trigger-after_siswa_insert) - [Procedure: AddNewSiswa](#procedure-addnewsiswa) - [Function: GetTotalStudents](#function-gettotalstudents) - [View: view_siswa_kelas](#view-view_siswa_kelas)
+- [Database Seeder Script](#database-seeder-script)
+  - [Query Overview Seeder](#query-overview-seeder)
+    - [Mata Pelajaran](#mata-pelajaran)
+    - [Kelas](#kelas)
+    - [Guru](#guru)
+    - [Siswa](#siswa)
+- [Database Procedure Script Nilai Akhir](#database-procedure-script-nilai-akhir)
+  - [Query Overview Procedure Nilai Akhir](#query-overview-procedure-nilai-akhir)
+    - [Procedure: InsertRandomNilaiAkhirForAllStudents](#procedure-insertrandomnilaiakhirforallstudents)
+    - [Procedure: CalculateAndInsertAvgNilaiAkhir](#procedure-calculateandinsertavgnilaiakhir)
+- [Database Procedure for Fact Pembayaran SPP](#database-procedure-for-fact-pembayaran-spp)
+  - [Query Overview](#query-overview-fact-pembayaran-spp)
+    - [Procedure: InsertFactPembayaranSpp](#procedure-insertfactpembayaranspp)
+- [Database Procedure For Absen](#database-procedure-for-absen)
+  - [Query Overview Absen](#query-overview-absen)
+    - [Procedure: InsertAbsensiByDate](#procedure-insertabsensibydate)
+- [Database Procedure For Bulk Insert Absen](#database-procedure-for-bulk-insert-absen)
+  - [Query Overview Bulk Insert Absen](#query-overview-bulk-insert-absen)
+    - [Procedure: InsertAbsensiByDate](#procedure-insertabsensibydate)
+- [Database Procedure Fact Absen Siswa](#database-procedure-fact-absen-siswa)
+  - [Query Overview Absen Siswa](#query-overview-absen-siswa)
+    - [Procedure: UpdateOrInsertFactAbsenSiswa](#procedure-updateorinsertfactabsensiswa)
+- [Database Procedure For Execution Script](#database-procedure-for-execution-script)
+  - [Query Overview Execution Script](#query-overview-execution-script)
+- [Database Table Creation and Procedure For Perform Siswa](#database-table-creation-and-procedure-for-perform-siswa)
+  - [Query Overview Creation and Procedure For Perform Siswa](#query-overview-creation-and-procedure-for-perform-siswa)
+    - [Table: perform_siswa](#table-perform_siswa)
+    - [Procedure: InsertIntoPerformSiswa](#procedure-insertintoperformsiswa)
+    - [Procedure: InsertIntoPerformSiswa](#procedure-insertintoperformsiswa)
+    - [View: view_complete_perform_siswa](#view-view_complete_perform_siswa)
+- [Database Synchronization - 11_data_syncro.sql](#database-synchronization---11_data_syncrosql)
+- [Centralized Replication - 12_replikasi_terpusat.sql](#centralized-replication---12_replikasi_terpusatsql)
+  - [Tabel `siswa_replica`](#tabel-siswa_replica)
+  - [Tabel `replikasi_siswa`](#tabel-replikasi_siswa)
+  - [Sinkronisasi Data Awal Centralized Replication](#sinkronisasi-data-awal-centralized-replication)
+- [Membuat Database `db_slave`](#membuat-database-dbslave)
+  - [Membuat Tabel `siswa` di `db_slave`](#membuat-tabel-siswa-di-dbslave)
+  - [Membuat Trigger `Replikasi_After_Insert`](#membuat-trigger-replikasi_after_insert)
+  - [Sinkronisasi Data Awal Multi-Database Replication](#sinkronisasi-data-awal-multi-database-replication)
+- [Centralized Sharding - 14_sharding_terpusat.sql](#centralized-sharding---14_sharding_terpusatsql)
+  - [Membuat Tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low`](#membuat-tabel-fact_avg_nilai_akhir_high-dan-fact_avg_nilai_akhir_low)
+  - [Membuat Trigger `sharding_after_insert`](#membuat-trigger-sharding_after_insert)
+  - [Sinkronisasi Data Awal Centralized Sharding](#sinkronisasi-data-awal-centralized-sharding)
+- [Multi-Database Sharding - 15_sharding_mult.sql](#multi-database-sharding---15_sharding_multsql)
+  - [Membuat Tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` di `db_slave`](#membuat-tabel-fact_avg_nilai_akhir_high-dan-fact_avg_nilai_akhir_low-di-dbslave)
+  - [Membuat Trigger `sharding_after_insert_mult`](#membuat-trigger-sharding_after_insert_mult)
+  - [Sinkronisasi Data Awal Multi-Database Sharding](#sinkronisasi-data-awal-multi-database-sharding)
+- [Data Partitioning and Synchronization - 16_partitioning_data_sync.sql](#data-partitioning-and-synchronization---16_partitioning_data_syncsql)
+  - [Membuat Tabel `fact_avg_nilai_akhir_sync` di `senior_high_school` dan `db_slave`](#membuat-tabel-fact_avg_nilai_akhir_sync-di-senior_high_school-dan-dbslave)
+  - [Sinkronisasi Data Awal Data Partitioning and Synchronization](#sinkronisasi-data-awal-data-partitioning-and-synchronization)
+  - [Query Data dari Partisi Tertentu](#query-data-dari-partisi-tertentu)
+- [Tentang Penulis](#tentang-penulis)
+  - [Kontak](#kontak)
+  - [Lisensi](#lisensi)
+  - [Kontribusi](#kontribusi)
+
+## How to Run
+
+1. Buka klien SQL Anda (misalnya, MySQL Workbench, phpMyAdmin, dsb.).
+2. Salin dan tempelkan query ini ke klien SQL Anda.
+3. Jalankan query.
+
 # Database Creation Script
 
 File `1_create_database.sql` berisi skrip SQL untuk membuat dan menggunakan database baru.
@@ -242,7 +309,7 @@ View view_siswa_kelas digunakan untuk melihat siswa_id, nama, dan nama_kelas dar
 
 File `4_run_seeder.sql` berisi skrip SQL untuk mengisi tabel-tabel dalam database dengan data awal.
 
-## Query Overview
+## Query Overview Seeder
 
 Skrip ini mengisi tabel `mata_pelajaran`, `kelas`, `guru`, dan `siswa` dengan data awal.
 
@@ -286,11 +353,11 @@ INSERT INTO siswa (nama, alamat, tanggal_lahir, kelas_id) VALUES ('Ava Garcia', 
 
 Ini memasukkan beberapa siswa ke dalam tabel siswa.
 
-# Database Procedure Script
+# Database Procedure Script Nilai Akhir
 
 File `5_procedure_for_nilai_akhir.sql` berisi dua prosedur SQL yang digunakan untuk mengotomatisasi proses penilaian di sebuah institusi pendidikan.
 
-## Query Overview
+## Query Overview Procedure Nilai Akhir
 
 ### Procedure: InsertRandomNilaiAkhirForAllStudents
 
@@ -413,11 +480,11 @@ Prosedur CalculateAndInsertAvgNilaiAkhir digunakan untuk menghitung rata-rata ni
 
 ```
 
-# Database Procedure Script
+# Database Procedure for Fact Pembayaran SPP
 
 File `6_procedure_for_fact_pembayaran_spp.sql` berisi skrip SQL untuk membuat prosedur yang mengisi tabel `fact_pembayaran_spp` dengan data acak.
 
-## Query Overview
+## Query Overview Fact Pembayaran Spp
 
 ### Procedure: InsertFactPembayaranSpp
 
@@ -476,11 +543,11 @@ Prosedur InsertFactPembayaranSpp digunakan untuk mengisi tabel fact_pembayaran_s
 5. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
 ```
 
-# Database Procedure Script
+# Database Procedure For Absen
 
 File `7_procedure_for_absen.sql` berisi skrip SQL untuk membuat prosedur yang mengisi tabel `absen` dengan data acak.
 
-## Query Overview
+## Query Overview Absen
 
 ### Procedure: InsertAbsensiByDate
 
@@ -535,11 +602,11 @@ Prosedur InsertAbsensiByDate digunakan untuk mengisi tabel absen dengan data aca
 4. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
 ```
 
-# Database Procedure Script
+# Database Procedure For Bulk Insert Absen
 
 File `7_procedure_for_absen.sql` berisi skrip SQL untuk membuat prosedur yang mengisi tabel `absen` dengan data acak berdasarkan tanggal yang diberikan.
 
-## Query Overview
+## Query Overview Bulk Insert Absen
 
 ### Procedure: InsertAbsensiByDate
 
@@ -572,11 +639,11 @@ Prosedur InsertAbsensiByDate digunakan untuk mengisi tabel absen dengan data aca
 4. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
 ```
 
-# Database Procedure Script
+# Database Procedure Fact Absen Siswa
 
 File `8_procedure_for_fact_absen.sql` berisi skrip SQL untuk membuat prosedur yang menghitung dan memperbarui atau memasukkan jumlah absen 'Hadir' dan absen 'Tidak Hadir' untuk setiap siswa.
 
-## Query Overview
+## Query Overview Absen Siswa
 
 ### Procedure: UpdateOrInsertFactAbsenSiswa
 
@@ -644,11 +711,11 @@ Prosedur UpdateOrInsertFactAbsenSiswa digunakan untuk menghitung jumlah absen 'H
 5. Prosedur ini mengulangi langkah-langkah ini untuk setiap siswa.
 ```
 
-# Database Procedure Execution Script
+# Database Procedure For Execution Script
 
 File `9_run_all_procedure.sql` berisi skrip SQL untuk menjalankan semua prosedur yang telah dibuat sebelumnya.
 
-## Query Overview
+## Query Overview Execution Script
 
 ```sql
 CALL InsertRandomNilaiAkhirForAllStudents();
@@ -676,17 +743,11 @@ Skrip ini menjalankan prosedur-prosedur berikut:
 5. `UpdateFactAbsenSiswa`: Menghitung jumlah absen 'Hadir' dan 'Tidak Hadir' untuk setiap siswa dan memperbarui atau memasukkan data tersebut ke dalam tabel `fact_absen_siswa`.
 ```
 
-## How to Run
-
-1. Buka klien SQL Anda (misalnya, MySQL Workbench, phpMyAdmin, dsb.).
-2. Salin dan tempelkan query ini ke klien SQL Anda.
-3. Jalankan query.
-
-# Database Table Creation and Procedure Script
+# Database Table Creation and Procedure For Perform Siswa
 
 File `10_snowflake_table_perform_siswa.sql` berisi skrip SQL untuk membuat tabel `perform_siswa` dan prosedur `InsertIntoPerformSiswa`.
 
-## Query Overview
+## Query Overview Creation and Procedure For Perform Siswa
 
 ### Table: perform_siswa
 
@@ -867,7 +928,7 @@ END //
 DELIMITER ;
 ```
 
-### Sinkronisasi Data Awal
+### Sinkronisasi Data Awal Centralized Replication
 
 Untuk memastikan data di tabel `siswa_replica` sama dengan tabel `siswa`, kita melakukan sinkronisasi data awal dengan perintah berikut:
 
@@ -928,7 +989,7 @@ END //
 DELIMITER ;
 ```
 
-### Sinkronisasi Data Awal
+### Sinkronisasi Data Awal Multi-Database Replication
 
 Untuk memastikan data di tabel `siswa` di `db_slave` sama dengan tabel `siswa` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
 
@@ -983,7 +1044,7 @@ END //
 DELIMITER ;
 ```
 
-### Sinkronisasi Data Awal
+### Sinkronisasi Data Awal Centralized Sharding
 
 Untuk memastikan data di tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` sama dengan tabel `fact_avg_nilai_akhir`, kita melakukan sinkronisasi data awal dengan perintah berikut:
 
@@ -1048,7 +1109,7 @@ END //
 DELIMITER ;
 ```
 
-### Sinkronisasi Data Awal
+### Sinkronisasi Data Awal Multi-Database Sharding
 
 Untuk memastikan data di tabel `fact_avg_nilai_akhir_high` dan `fact_avg_nilai_akhir_low` di `db_slave` sama dengan tabel `fact_avg_nilai_akhir` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
 
@@ -1108,7 +1169,7 @@ PARTITION P3 VALUES LESS THAN MAXVALUE
 );
 ```
 
-### Sinkronisasi Data Awal
+### Sinkronisasi Data Awal Data Partitioning and Synchronization
 
 Untuk memastikan data di tabel `fact_avg_nilai_akhir_sync` di kedua database sama dengan tabel `fact_avg_nilai_akhir` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
 
