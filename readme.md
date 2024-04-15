@@ -824,3 +824,122 @@ View ini menampilkan kolom berikut:
 - total_absen_hadir_siswa: Total absen 'Hadir' siswa.
 - total_absen_tidak_hadir_siswa: Total absen 'Tidak Hadir' siswa.
 ```
+
+# Database Synchronization - 11_data_syncro.sql
+
+File `11_data_syncro.sql` ini hanya berisi percobaan dan catatan, sehingga tidak ada yang spesial di dalamnya. File ini menciptakan tabel `siswa_replica` dan trigger `replikasi_siswa` yang bertujuan untuk mereplikasi data siswa setiap kali ada penambahan data baru ke tabel `siswa`. Namun, untuk tujuan praktis dan penggunaan sehari-hari, file ini dapat diabaikan.
+
+## Langkah Selanjutnya
+
+Silakan lanjutkan ke file `12_replikasi_terpusat.sql` untuk melihat implementasi replikasi data yang lebih terpusat dan terorganisir.
+
+# Centralized Replication - 12_replikasi_terpusat.sql
+
+File `12_replikasi_terpusat.sql` ini berisi skrip SQL untuk membuat replikasi data yang lebih terpusat dan terorganisir.
+
+### Tabel `siswa_replica`
+
+Tabel ini adalah replika dari tabel `siswa`. Setiap kali ada penambahan data baru ke tabel `siswa`, data tersebut juga akan ditambahkan ke tabel `siswa_replica`.
+
+```sql
+CREATE TABLE siswa_replica (
+    siswa_id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    alamat VARCHAR(255),
+    tanggal_lahir DATE,
+    kelas_id INT,
+    INDEX nama_idx (nama)
+);
+```
+
+### Tabel `replikasi_siswa`
+
+Trigger ini dibuat untuk mereplikasi data siswa setiap kali ada penambahan data baru ke tabel `siswa`.
+
+```sql
+DELIMITER //
+CREATE TRIGGER replikasi_siswa AFTER INSERT ON siswa
+FOR EACH ROW
+BEGIN
+    INSERT INTO siswa_replica (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+    VALUES (NEW.siswa_id, NEW.nama, NEW.alamat, NEW.tanggal_lahir, NEW.kelas_id);
+END //
+DELIMITER ;
+```
+
+### Sinkronisasi Data Awal
+
+Untuk memastikan data di tabel `siswa_replica` sama dengan tabel `siswa`, kita melakukan sinkronisasi data awal dengan perintah berikut:
+
+```sql
+INSERT INTO siswa_replica (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+SELECT siswa_id, nama, alamat, tanggal_lahir, kelas_id
+FROM siswa
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nama = VALUES(nama),
+alamat = VALUES(alamat),
+tanggal_lahir = VALUES(tanggal_lahir),
+kelas_id = VALUES(kelas_id);
+```
+
+# Multi-Database Replication - 13_replikasi_mult.sql
+
+File `13_replikasi_mult.sql` ini berisi skrip SQL untuk membuat replikasi data antara dua database: `senior_high_school` dan `db_slave`.
+
+## Membuat Database `db_slave`
+
+Database `db_slave` dibuat sebagai tempat untuk menyimpan data replika dari tabel `siswa` di database `senior_high_school`.
+
+```sql
+CREATE DATABASE db_slave;
+```
+
+### Membuat Tabel `siswa` di `db_slave`
+
+Tabel `siswa` di `db_slave` memiliki struktur yang sama dengan tabel `siswa` di `senior_high_school`.
+
+```sql
+USE db_slave;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+CREATE TABLE siswa (
+    siswa_id INT AUTO_INCREMENT PRIMARY KEY,
+    nama VARCHAR(100),
+    alamat VARCHAR(255),
+    tanggal_lahir DATE,
+    kelas_id INT,
+    INDEX nama_idx (nama)
+);
+```
+
+### Membuat Trigger `Replikasi_After_Insert`
+
+Trigger ini dibuat di database `senior_high_school` untuk mereplikasi data siswa setiap kali ada penambahan data baru ke tabel `siswa`.
+
+```sql
+USE senior_high_school;
+-- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
+DELIMITER //
+CREATE TRIGGER Replikasi_After_Insert AFTER INSERT ON siswa FOR EACH ROW
+BEGIN
+    INSERT INTO db_slave.siswa (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+    VALUES (NEW.siswa_id, NEW.nama, NEW.alamat, NEW.tanggal_lahir, NEW.kelas_id);
+END //
+DELIMITER ;
+```
+
+### Sinkronisasi Data Awal
+
+Untuk memastikan data di tabel `siswa` di `db_slave` sama dengan tabel `siswa` di `senior_high_school`, kita melakukan sinkronisasi data awal dengan perintah berikut:
+
+```sql
+INSERT INTO db_slave.siswa (siswa_id, nama, alamat, tanggal_lahir, kelas_id)
+SELECT siswa_id, nama, alamat, tanggal_lahir, kelas_id
+FROM senior_high_school.siswa
+ON DUPLICATE KEY UPDATE
+siswa_id = VALUES(siswa_id),
+nama = VALUES(nama),
+alamat = VALUES(alamat),
+tanggal_lahir = VALUES(tanggal_lahir),
+kelas_id = VALUES(kelas_id);
+```
