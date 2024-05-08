@@ -1,30 +1,46 @@
 version: "3"
 
 services:
- db:
-  image: mysql:latest
-  container_name: db
-  command: --log-bin-trust-function-creators=1
-  environment:
-   MYSQL_ROOT_PASSWORD: my_secret_password
-   MYSQL_DATABASE: app_db
-   MYSQL_USER: db_user
-   MYSQL_PASSWORD: db_user_pass
-  ports:
-   - "6033:3306"
-  volumes:
-   - dbdata:/var/lib/mysql
- phpmyadmin:
-  image: phpmyadmin/phpmyadmin
-  container_name: pma
-  links:
-   - db
-  environment:
-   PMA_HOST: db
-   PMA_PORT: 3306
-   PMA_ARBITRARY: 1
-  restart: always
-  ports:
-   - 8081:80
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db1
+      MYSQL_USER: db_user1
+      MYSQL_PASSWORD: db_user_pass1
+    ports:
+      - "3307:3306"
+    volumes:
+      - mariadbdata:/var/lib/mysql
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    command: --log-bin-trust-function-creators=1
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db2
+      MYSQL_USER: db_user2
+      MYSQL_PASSWORD: db_user_pass2
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - mariadb
+      - mysql
+    environment:
+      PMA_HOSTS: mariadb,mysql
+      PMA_PORT: 3306
+    restart: always
+    ports:
+      - 8080:80
+
 volumes:
- dbdata:
+  mariadbdata:
+  mysqldata:
