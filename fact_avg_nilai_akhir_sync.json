@@ -1,0 +1,62 @@
+[
+  {
+    "fact_avg_nilai_akhir_id": 1,
+    "siswa_id": 10,
+    "nilai_akhir": 71
+  },
+  {
+    "fact_avg_nilai_akhir_id": 2,
+    "siswa_id": 12,
+    "nilai_akhir": 64
+  },
+  {
+    "fact_avg_nilai_akhir_id": 3,
+    "siswa_id": 7,
+    "nilai_akhir": 74
+  },
+  {
+    "fact_avg_nilai_akhir_id": 6,
+    "siswa_id": 9,
+    "nilai_akhir": 70
+  },
+  {
+    "fact_avg_nilai_akhir_id": 7,
+    "siswa_id": 2,
+    "nilai_akhir": 66
+  },
+  {
+    "fact_avg_nilai_akhir_id": 10,
+    "siswa_id": 8,
+    "nilai_akhir": 67
+  },
+  {
+    "fact_avg_nilai_akhir_id": 4,
+    "siswa_id": 4,
+    "nilai_akhir": 76
+  },
+  {
+    "fact_avg_nilai_akhir_id": 5,
+    "siswa_id": 11,
+    "nilai_akhir": 75
+  },
+  {
+    "fact_avg_nilai_akhir_id": 8,
+    "siswa_id": 1,
+    "nilai_akhir": 80
+  },
+  {
+    "fact_avg_nilai_akhir_id": 9,
+    "siswa_id": 3,
+    "nilai_akhir": 76
+  },
+  {
+    "fact_avg_nilai_akhir_id": 11,
+    "siswa_id": 6,
+    "nilai_akhir": 80
+  },
+  {
+    "fact_avg_nilai_akhir_id": 12,
+    "siswa_id": 5,
+    "nilai_akhir": 80
+  }
+]

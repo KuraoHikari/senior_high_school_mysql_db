@@ -1,0 +1,110 @@
+[
+  {
+    "nama_siswa": "Amelia White",
+    "nama_kelas_siswa": "X IPA 1",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 71,
+    "total_absen_hadir_siswa": 3,
+    "total_absen_tidak_hadir_siswa": 7
+  },
+  {
+    "nama_siswa": "Ava Garcia",
+    "nama_kelas_siswa": "X IPA 3",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 64.33,
+    "total_absen_hadir_siswa": 2,
+    "total_absen_tidak_hadir_siswa": 8
+  },
+  {
+    "nama_siswa": "Daniel Lee",
+    "nama_kelas_siswa": "X IPA 1",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 73.67,
+    "total_absen_hadir_siswa": 2,
+    "total_absen_tidak_hadir_siswa": 8
+  },
+  {
+    "nama_siswa": "Emma Johnson",
+    "nama_kelas_siswa": "X IPA 1",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 76.33,
+    "total_absen_hadir_siswa": 2,
+    "total_absen_tidak_hadir_siswa": 8
+  },
+  {
+    "nama_siswa": "Ethan Anderson",
+    "nama_kelas_siswa": "X IPA 2",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 75.33,
+    "total_absen_hadir_siswa": 3,
+    "total_absen_tidak_hadir_siswa": 7
+  },
+  {
+    "nama_siswa": "James Martinez",
+    "nama_kelas_siswa": "X IPA 3",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 70.33,
+    "total_absen_hadir_siswa": 2,
+    "total_absen_tidak_hadir_siswa": 8
+  },
+  {
+    "nama_siswa": "Jane Doe",
+    "nama_kelas_siswa": "X IPA 2",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 66.33,
+    "total_absen_hadir_siswa": 1,
+    "total_absen_tidak_hadir_siswa": 9
+  },
+  {
+    "nama_siswa": "John Doe",
+    "nama_kelas_siswa": "X IPA 1",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 80,
+    "total_absen_hadir_siswa": 1,
+    "total_absen_tidak_hadir_siswa": 9
+  },
+  {
+    "nama_siswa": "Michael Smith",
+    "nama_kelas_siswa": "X IPA 3",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 75.67,
+    "total_absen_hadir_siswa": 3,
+    "total_absen_tidak_hadir_siswa": 7
+  },
+  {
+    "nama_siswa": "Olivia Taylor",
+    "nama_kelas_siswa": "X IPA 2",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 67.33,
+    "total_absen_hadir_siswa": 2,
+    "total_absen_tidak_hadir_siswa": 8
+  },
+  {
+    "nama_siswa": "Sophia Brown",
+    "nama_kelas_siswa": "X IPA 3",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 80,
+    "total_absen_hadir_siswa": 3,
+    "total_absen_tidak_hadir_siswa": 7
+  },
+  {
+    "nama_siswa": "William Wilson",
+    "nama_kelas_siswa": "X IPA 2",
+    "spp_siswa": 3000,
+    "status_spp": "Belum Lunas",
+    "avg_nilai_akhir": 80,
+    "total_absen_hadir_siswa": 1,
+    "total_absen_tidak_hadir_siswa": 9
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "siswa_id": 1,
+    "nama": "John Doe",
+    "nama_kelas": "X IPA 1"
+  },
+  {
+    "siswa_id": 2,
+    "nama": "Jane Doe",
+    "nama_kelas": "X IPA 2"
+  },
+  {
+    "siswa_id": 3,
+    "nama": "Michael Smith",
+    "nama_kelas": "X IPA 3"
+  },
+  {
+    "siswa_id": 4,
+    "nama": "Emma Johnson",
+    "nama_kelas": "X IPA 1"
+  },
+  {
+    "siswa_id": 5,
+    "nama": "William Wilson",
+    "nama_kelas": "X IPA 2"
+  },
+  {
+    "siswa_id": 6,
+    "nama": "Sophia Brown",
+    "nama_kelas": "X IPA 3"
+  },
+  {
+    "siswa_id": 7,
+    "nama": "Daniel Lee",
+    "nama_kelas": "X IPA 1"
+  },
+  {
+    "siswa_id": 8,
+    "nama": "Olivia Taylor",
+    "nama_kelas": "X IPA 2"
+  },
+  {
+    "siswa_id": 9,
+    "nama": "James Martinez",
+    "nama_kelas": "X IPA 3"
+  },
+  {
+    "siswa_id": 10,
+    "nama": "Amelia White",
+    "nama_kelas": "X IPA 1"
+  },
+  {
+    "siswa_id": 11,
+    "nama": "Ethan Anderson",
+    "nama_kelas": "X IPA 2"
+  },
+  {
+    "siswa_id": 12,
+    "nama": "Ava Garcia",
+    "nama_kelas": "X IPA 3"
+  }
+]

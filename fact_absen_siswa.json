@@ -1,0 +1,74 @@
+[
+  {
+    "fact_absen_siswa_id": 1,
+    "siswa_id": 10,
+    "total_absen_hadir": 3,
+    "total_absen_tidak_hadir": 7
+  },
+  {
+    "fact_absen_siswa_id": 2,
+    "siswa_id": 12,
+    "total_absen_hadir": 2,
+    "total_absen_tidak_hadir": 8
+  },
+  {
+    "fact_absen_siswa_id": 3,
+    "siswa_id": 7,
+    "total_absen_hadir": 2,
+    "total_absen_tidak_hadir": 8
+  },
+  {
+    "fact_absen_siswa_id": 4,
+    "siswa_id": 4,
+    "total_absen_hadir": 2,
+    "total_absen_tidak_hadir": 8
+  },
+  {
+    "fact_absen_siswa_id": 5,
+    "siswa_id": 11,
+    "total_absen_hadir": 3,
+    "total_absen_tidak_hadir": 7
+  },
+  {
+    "fact_absen_siswa_id": 6,
+    "siswa_id": 9,
+    "total_absen_hadir": 2,
+    "total_absen_tidak_hadir": 8
+  },
+  {
+    "fact_absen_siswa_id": 7,
+    "siswa_id": 2,
+    "total_absen_hadir": 1,
+    "total_absen_tidak_hadir": 9
+  },
+  {
+    "fact_absen_siswa_id": 8,
+    "siswa_id": 1,
+    "total_absen_hadir": 1,
+    "total_absen_tidak_hadir": 9
+  },
+  {
+    "fact_absen_siswa_id": 9,
+    "siswa_id": 3,
+    "total_absen_hadir": 3,
+    "total_absen_tidak_hadir": 7
+  },
+  {
+    "fact_absen_siswa_id": 10,
+    "siswa_id": 8,
+    "total_absen_hadir": 2,
+    "total_absen_tidak_hadir": 8
+  },
+  {
+    "fact_absen_siswa_id": 11,
+    "siswa_id": 6,
+    "total_absen_hadir": 3,
+    "total_absen_tidak_hadir": 7
+  },
+  {
+    "fact_absen_siswa_id": 12,
+    "siswa_id": 5,
+    "total_absen_hadir": 1,
+    "total_absen_tidak_hadir": 9
+  }
+]

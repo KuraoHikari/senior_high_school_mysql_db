@@ -1,0 +1,254 @@
+[
+  {
+    "nilai_akhir_mata_pelajaran_id": 1,
+    "guru_id": 2,
+    "siswa_id": 10,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 85
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 2,
+    "guru_id": 3,
+    "siswa_id": 10,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 72
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 3,
+    "guru_id": 1,
+    "siswa_id": 10,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 56
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 4,
+    "guru_id": 2,
+    "siswa_id": 12,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 66
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 5,
+    "guru_id": 3,
+    "siswa_id": 12,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 63
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 6,
+    "guru_id": 1,
+    "siswa_id": 12,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 64
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 7,
+    "guru_id": 2,
+    "siswa_id": 7,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 83
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 8,
+    "guru_id": 3,
+    "siswa_id": 7,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 73
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 9,
+    "guru_id": 1,
+    "siswa_id": 7,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 65
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 10,
+    "guru_id": 2,
+    "siswa_id": 4,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 57
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 11,
+    "guru_id": 3,
+    "siswa_id": 4,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 91
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 12,
+    "guru_id": 1,
+    "siswa_id": 4,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 81
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 13,
+    "guru_id": 2,
+    "siswa_id": 11,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 81
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 14,
+    "guru_id": 3,
+    "siswa_id": 11,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 65
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 15,
+    "guru_id": 1,
+    "siswa_id": 11,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 80
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 16,
+    "guru_id": 2,
+    "siswa_id": 9,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 55
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 17,
+    "guru_id": 3,
+    "siswa_id": 9,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 87
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 18,
+    "guru_id": 1,
+    "siswa_id": 9,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 69
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 19,
+    "guru_id": 2,
+    "siswa_id": 2,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 84
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 20,
+    "guru_id": 3,
+    "siswa_id": 2,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 61
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 21,
+    "guru_id": 1,
+    "siswa_id": 2,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 54
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 22,
+    "guru_id": 2,
+    "siswa_id": 1,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 90
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 23,
+    "guru_id": 3,
+    "siswa_id": 1,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 87
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 24,
+    "guru_id": 1,
+    "siswa_id": 1,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 63
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 25,
+    "guru_id": 2,
+    "siswa_id": 3,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 58
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 26,
+    "guru_id": 3,
+    "siswa_id": 3,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 99
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 27,
+    "guru_id": 1,
+    "siswa_id": 3,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 70
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 28,
+    "guru_id": 2,
+    "siswa_id": 8,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 54
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 29,
+    "guru_id": 3,
+    "siswa_id": 8,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 60
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 30,
+    "guru_id": 1,
+    "siswa_id": 8,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 88
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 31,
+    "guru_id": 2,
+    "siswa_id": 6,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 59
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 32,
+    "guru_id": 3,
+    "siswa_id": 6,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 85
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 33,
+    "guru_id": 1,
+    "siswa_id": 6,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 96
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 34,
+    "guru_id": 2,
+    "siswa_id": 5,
+    "mata_pelajaran_id": 2,
+    "nilai_akhir": 72
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 35,
+    "guru_id": 3,
+    "siswa_id": 5,
+    "mata_pelajaran_id": 3,
+    "nilai_akhir": 72
+  },
+  {
+    "nilai_akhir_mata_pelajaran_id": 36,
+    "guru_id": 1,
+    "siswa_id": 5,
+    "mata_pelajaran_id": 1,
+    "nilai_akhir": 96
+  }
+]

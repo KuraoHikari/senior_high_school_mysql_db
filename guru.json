@@ -1,0 +1,17 @@
+[
+  {
+    "guru_id": 1,
+    "nama": "Budi Santoso",
+    "mata_pelajaran_id": 1
+  },
+  {
+    "guru_id": 2,
+    "nama": "Anita Wijaya",
+    "mata_pelajaran_id": 2
+  },
+  {
+    "guru_id": 3,
+    "nama": "Dewi Rahayu",
+    "mata_pelajaran_id": 3
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "fact_pembayaran_spp_id": 1,
+    "spp_id": 1,
+    "siswa_id": 1,
+    "kelas_id": 1
+  },
+  {
+    "fact_pembayaran_spp_id": 2,
+    "spp_id": 2,
+    "siswa_id": 2,
+    "kelas_id": 2
+  },
+  {
+    "fact_pembayaran_spp_id": 3,
+    "spp_id": 3,
+    "siswa_id": 3,
+    "kelas_id": 3
+  },
+  {
+    "fact_pembayaran_spp_id": 4,
+    "spp_id": 4,
+    "siswa_id": 4,
+    "kelas_id": 1
+  },
+  {
+    "fact_pembayaran_spp_id": 5,
+    "spp_id": 5,
+    "siswa_id": 5,
+    "kelas_id": 2
+  },
+  {
+    "fact_pembayaran_spp_id": 6,
+    "spp_id": 6,
+    "siswa_id": 6,
+    "kelas_id": 3
+  },
+  {
+    "fact_pembayaran_spp_id": 7,
+    "spp_id": 7,
+    "siswa_id": 7,
+    "kelas_id": 1
+  },
+  {
+    "fact_pembayaran_spp_id": 8,
+    "spp_id": 8,
+    "siswa_id": 8,
+    "kelas_id": 2
+  },
+  {
+    "fact_pembayaran_spp_id": 9,
+    "spp_id": 9,
+    "siswa_id": 9,
+    "kelas_id": 3
+  },
+  {
+    "fact_pembayaran_spp_id": 10,
+    "spp_id": 10,
+    "siswa_id": 10,
+    "kelas_id": 1
+  },
+  {
+    "fact_pembayaran_spp_id": 11,
+    "spp_id": 11,
+    "siswa_id": 11,
+    "kelas_id": 2
+  },
+  {
+    "fact_pembayaran_spp_id": 12,
+    "spp_id": 12,
+    "siswa_id": 12,
+    "kelas_id": 3
+  }
+]

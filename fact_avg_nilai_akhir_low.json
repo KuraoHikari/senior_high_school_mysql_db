@@ -1,0 +1,22 @@
+[
+  {
+    "fact_avg_nilai_akhir_id": 2,
+    "siswa_id": 12,
+    "nilai_akhir": 64.33
+  },
+  {
+    "fact_avg_nilai_akhir_id": 6,
+    "siswa_id": 9,
+    "nilai_akhir": 70.33
+  },
+  {
+    "fact_avg_nilai_akhir_id": 7,
+    "siswa_id": 2,
+    "nilai_akhir": 66.33
+  },
+  {
+    "fact_avg_nilai_akhir_id": 10,
+    "siswa_id": 8,
+    "nilai_akhir": 67.33
+  }
+]

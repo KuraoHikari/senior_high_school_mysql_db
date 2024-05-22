@@ -1,0 +1,722 @@
+[
+  {
+    "absen_id": 1,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 2,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 3,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 4,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 5,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 6,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 7,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 8,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 9,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 10,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 11,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 12,
+    "tanggal": "2023-03-31T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 13,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 14,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 15,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 16,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 17,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 18,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 19,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 20,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 21,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 22,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 23,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 24,
+    "tanggal": "2023-04-01T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 25,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 26,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 27,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 28,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 29,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 30,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 31,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 32,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 33,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 34,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 35,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 36,
+    "tanggal": "2023-04-02T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 37,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 38,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 39,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 40,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 41,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 42,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 43,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 44,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 45,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 46,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 47,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 48,
+    "tanggal": "2023-04-03T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 49,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 50,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 51,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 52,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 53,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 54,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 55,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 56,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 57,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 58,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 59,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 60,
+    "tanggal": "2023-04-04T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 61,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 62,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 63,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 64,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 65,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 66,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 67,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 68,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 69,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 70,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 71,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 72,
+    "tanggal": "2023-04-05T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 73,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 74,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 75,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 76,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 77,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 78,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 79,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 80,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 81,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 82,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 83,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 84,
+    "tanggal": "2023-04-06T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 85,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 86,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 87,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 88,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 89,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 90,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 91,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 92,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 93,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 94,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 95,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 96,
+    "tanggal": "2023-04-07T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 97,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 98,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 99,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 100,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 101,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 102,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 103,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 104,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 105,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 106,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 107,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 108,
+    "tanggal": "2023-04-08T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 109,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 10,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 110,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 12,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 111,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 7,
+    "status": "Alpha"
+  },
+  {
+    "absen_id": 112,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 4,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 113,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 11,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 114,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 9,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 115,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 2,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 116,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 1,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 117,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 3,
+    "status": "Izin"
+  },
+  {
+    "absen_id": 118,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 8,
+    "status": "Sakit"
+  },
+  {
+    "absen_id": 119,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 6,
+    "status": "Hadir"
+  },
+  {
+    "absen_id": 120,
+    "tanggal": "2023-04-09T16:00:00.000Z",
+    "siswa_id": 5,
+    "status": "Hadir"
+  }
+]

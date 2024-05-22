@@ -1,0 +1,98 @@
+[
+  {
+    "spp_id": 1,
+    "siswa_id": 1,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 2,
+    "siswa_id": 2,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 3,
+    "siswa_id": 3,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 4,
+    "siswa_id": 4,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 5,
+    "siswa_id": 5,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 6,
+    "siswa_id": 6,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 7,
+    "siswa_id": 7,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 8,
+    "siswa_id": 8,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 9,
+    "siswa_id": 9,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 10,
+    "siswa_id": 10,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 11,
+    "siswa_id": 11,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  },
+  {
+    "spp_id": 12,
+    "siswa_id": 12,
+    "bulan": 6,
+    "tahun": 2024,
+    "jumlah": 3000,
+    "status": "Belum Lunas"
+  }
+]

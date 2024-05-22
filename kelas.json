@@ -1,0 +1,17 @@
+[
+  {
+    "kelas_id": 1,
+    "nama_kelas": "X IPA 1",
+    "tingkat": 10
+  },
+  {
+    "kelas_id": 2,
+    "nama_kelas": "X IPA 2",
+    "tingkat": 10
+  },
+  {
+    "kelas_id": 3,
+    "nama_kelas": "X IPA 3",
+    "tingkat": 10
+  }
+]
