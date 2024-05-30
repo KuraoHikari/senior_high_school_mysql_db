@@ -26,6 +26,8 @@ BEGIN
 END //
 DELIMITER ;
 
+-- jangan run query di bawah ini
+
 INSERT INTO db_slave.fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
 SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
 FROM senior_high_school.fact_avg_nilai_akhir
