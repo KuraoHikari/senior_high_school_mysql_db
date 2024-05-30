@@ -1,8 +1,25 @@
 # Table of Contents
 
 - [How to Run](#how-to-run)
-- [Database Creation Script](#database-creation-script)
-- [Database Table Creation Script](#database-table-creation-script) - [Tabel Siswa](#tabel-siswa) - [Tabel Guru](#tabel-guru) - [Tabel Mata Pelajaran](#tabel-mata-pelajaran) - [Tabel Absen](#tabel-absen) - [Tabel SPP](#tabel-spp) - [Tabel Tugas](#tabel-tugas) - [Tabel Kelas](#tabel-kelas) - [Tabel Nilai Akhir Mata Pelajaran](#tabel-nilai-akhir-mata-pelajaran) - [Tabel Fact Pembayaran SPP](#tabel-fact-pembayaran-spp) - [Tabel Fact Avg Nilai Akhir](#tabel-fact-avg-nilai-akhir) - [Tabel Fact Absen Siswa](#tabel-fact-absen-siswa) -[Database Procedures, Functions, Views, and Triggers](#database-procedures-functions-views-and-triggers) - [Trigger: after_siswa_insert](#trigger-after_siswa_insert) - [Procedure: AddNewSiswa](#procedure-addnewsiswa) - [Function: GetTotalStudents](#function-gettotalstudents) - [View: view_siswa_kelas](#view-view_siswa_kelas)
+- [Database Table Creation Script](#database-table-creation-script)
+  - [Query Overview](#query-overview-1)
+    - [Tabel Siswa](#tabel-siswa)
+    - [Tabel Guru](#tabel-guru)
+    - [Tabel Mata Pelajaran](#tabel-mata-pelajaran)
+    - [Tabel Absen](#tabel-absen)
+    - [Tabel SPP](#tabel-spp)
+    - [Tabel Tugas](#tabel-tugas)
+    - [Tabel Kelas](#tabel-kelas)
+    - [Tabel Nilai Akhir Mata Pelajaran](#tabel-nilai-akhir-mata-pelajaran)
+    - [Tabel Fact Pembayaran SPP](#tabel-fact-pembayaran-spp)
+    - [Tabel Fact Avg Nilai Akhir](#tabel-fact-avg-nilai-akhir)
+    - [Tabel Fact Absen Siswa](#tabel-fact-absen-siswa)
+- [Database Procedures, Functions, Views, and Triggers](#database-procedures-functions-views-and-triggers)
+  - [Query Overview](#query-overview-2)
+    - [Trigger: after_siswa_insert](#trigger-after_siswa_insert)
+    - [Procedure: AddNewSiswa](#procedure-addnewsiswa)
+    - [Function: GetTotalStudents](#function-gettotalstudents)
+    - [View: view_siswa_kelas](#view-view_siswa_kelas)
 - [Database Seeder Script](#database-seeder-script)
   - [Query Overview Seeder](#query-overview-seeder)
     - [Mata Pelajaran](#mata-pelajaran)
@@ -54,6 +71,11 @@
   - [Membuat Tabel `fact_avg_nilai_akhir_sync` di `senior_high_school` dan `db_slave`](#membuat-tabel-fact_avg_nilai_akhir_sync-di-senior_high_school-dan-dbslave)
   - [Sinkronisasi Data Awal Data Partitioning and Synchronization](#sinkronisasi-data-awal-data-partitioning-and-synchronization)
   - [Query Data dari Partisi Tertentu](#query-data-dari-partisi-tertentu)
+- [Query transaction - 17_implement_data transaction.sql](#query_transaction---17_implement_data_transactionsql)
+
+  - [Membuat Procedure `InsertDataWithTransaction`](#membuat_procedure_insertdatawithtransaction)
+  - [Menjalankan Procedure `InsertDataWithTransaction`](#menjalankan_procedure_insertdatawithtransaction)
+
 - [Tentang Penulis](#tentang-penulis)
   - [Kontak](#kontak)
   - [Lisensi](#lisensi)
@@ -1207,6 +1229,71 @@ SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
 USE db_slave;
 -- di phpmyadmin harus di arahin dahulu cursor routenya ke db ini
 SELECT * FROM fact_avg_nilai_akhir_sync PARTITION (p2);
+```
+
+# Query transaction - 17_implement_data transaction.sql
+
+File `17_implement_data transaction.sql` ini berisi skrip SQL untuk membuat sharding data yang lebih terpusat dan terorganisir di beberapa database menggunakan procedure dengan query transaction di dalamnya untuk memastikan seluruh proses selesai hingga akhir.
+
+### Membuat Procedure `InsertDataWithTransaction`
+
+```sql
+DELIMITER //
+CREATE PROCEDURE InsertDataWithTransaction()
+BEGIN
+  START TRANSACTION;
+  BEGIN
+    INSERT INTO fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+    SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+    FROM fact_avg_nilai_akhir
+    WHERE nilai_akhir > 70
+    ON DUPLICATE KEY UPDATE
+    siswa_id = VALUES(siswa_id),
+    nilai_akhir = VALUES(nilai_akhir);
+
+    INSERT INTO fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+    SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+    FROM fact_avg_nilai_akhir
+    WHERE nilai_akhir < 71
+    ON DUPLICATE KEY UPDATE
+    siswa_id = VALUES(siswa_id),
+    nilai_akhir = VALUES(nilai_akhir);
+
+    INSERT INTO db_slave.fact_avg_nilai_akhir_high (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+    SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+    FROM senior_high_school.fact_avg_nilai_akhir
+    WHERE nilai_akhir > 70
+    ON DUPLICATE KEY UPDATE
+    siswa_id = VALUES(siswa_id),
+    nilai_akhir = VALUES(nilai_akhir);
+
+    INSERT INTO db_slave.fact_avg_nilai_akhir_low (fact_avg_nilai_akhir_id, siswa_id, nilai_akhir)
+    SELECT fact_avg_nilai_akhir_id, siswa_id, nilai_akhir
+    FROM senior_high_school.fact_avg_nilai_akhir
+    WHERE nilai_akhir < 71
+    ON DUPLICATE KEY UPDATE
+    siswa_id = VALUES(siswa_id),
+    nilai_akhir = VALUES(nilai_akhir);
+  END;
+  COMMIT;
+END //
+```
+
+Prosedur InsertDataWithTransaction, melakukan langkah-langkah berikut:
+
+```
+1. Memulai transaksi.
+2. Memasukkan data ke dalam tabel fact_avg_nilai_akhir_high. Data dipilih dari tabel fact_avg_nilai_akhir di mana nilai_akhir lebih besar dari 70. Jika catatan dengan siswa_id yang sama sudah ada, field siswa_id dan nilai_akhir diperbarui.
+3. Memasukkan data ke dalam tabel fact_avg_nilai_akhir_low. Data dipilih dari tabel fact_avg_nilai_akhir di mana nilai_akhir kurang dari 71. Jika catatan dengan siswa_id yang sama sudah ada, field siswa_id dan nilai_akhir diperbarui.
+4. Memasukkan data ke dalam tabel db_slave.fact_avg_nilai_akhir_high. Data dipilih dari tabel senior_high_school.fact_avg_nilai_akhir di mana nilai_akhir lebih besar dari 70. Jika catatan dengan siswa_id yang sama sudah ada, field siswa_id dan nilai_akhir diperbarui.
+5. Memasukkan data ke dalam tabel db_slave.fact_avg_nilai_akhir_low. Data dipilih dari tabel senior_high_school.fact_avg_nilai_akhir di mana nilai_akhir kurang dari 71. Jika catatan dengan siswa_id yang sama sudah ada, field siswa_id dan nilai_akhir diperbarui.
+6. Melakukan commit transaksi.
+```
+
+### Menjalankan Procedure `InsertDataWithTransaction`
+
+```sql
+CALL InsertDataWithTransaction();
 ```
 
 # Tentang Penulis
