@@ -76,10 +76,30 @@
   - [Membuat Procedure `InsertDataWithTransaction`](#membuat_procedure_insertdatawithtransaction)
   - [Menjalankan Procedure `InsertDataWithTransaction`](#menjalankan_procedure_insertdatawithtransaction)
 
+- [MySQL to JSON Exporter](#mysql-to-json-exporter)
+
+  - [Features](#features)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [Project Structure](#project-structure)
+  - [Dependencies](#dependencies)
+  - [Acknowledgements](#acknowledgements)
+
 - [Tentang Penulis](#tentang-penulis)
   - [Kontak](#kontak)
   - [Lisensi](#lisensi)
   - [Kontribusi](#kontribusi)
+- [Docker Compose Setup for MariaDB, MySQL, and phpMyAdmin](#docker-compose-setup-for-mariadb-mysql-and-phpmyadmin)
+  - [Prerequisites](#prerequisites)
+  - [Services](#services)
+    - [MariaDB](#mariadb)
+    - [MySQL](#mysql)
+    - [phpMyAdmin](#phpmyadmin)
+  - [Volumes](#volumes)
+  - [Usage](#usage)
+  - [Notes](#notes)
+  - [Troubleshooting](#troubleshooting)
 
 ## How to Run
 
@@ -1295,6 +1315,168 @@ Prosedur InsertDataWithTransaction, melakukan langkah-langkah berikut:
 ```sql
 CALL InsertDataWithTransaction();
 ```
+
+# MySQL to JSON Exporter
+
+Skrip Node.js ini terhubung ke database MySQL, mengambil semua tabel, dan mengekspor data dari tiap tabel ke dalam file JSON terpisah.
+
+## Features
+
+- Terhubung ke database MySQL.
+- Mengambil semua tabel dari database yang ditentukan.
+- Mengekspor data dari tiap tabel ke dalam file JSON individual.
+- Membuat direktori untuk file JSON jika belum ada.
+
+## Prerequisites
+
+- Node.js
+- npm (Node Package Manager)
+- MySQL server
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone git@github.com:KuraoHikari/senior_high_school_mysql_db.git
+   cd senior_high_school_mysql_db
+   ```
+
+2. Install the dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Update the MySQL connection details in `index.js`:
+   ```javascript
+   const connection = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "my_secret_password",
+    database: "senior_high_school",
+    port: 3307,
+   });
+   ```
+
+## Usage
+
+1. Pastikan server MySQL Anda berjalan dan dapat diakses dengan detail koneksi yang diberikan.
+
+2. Run the script:
+
+   ```bash
+   node index.js
+   ```
+
+3. Skrip akan terhubung ke database MySQL, mengambil semua tabel, dan mengekspor data ke file JSON di direktori `jsonExport`.
+
+## Project Structure
+
+- `index.js`: File skrip utama yang menangani koneksi database dan ekspor data.
+- `jsonExport/`: Direktori tempat file JSON disimpan.
+
+## Dependencies
+
+- `mysql`: Driver Node.js untuk MySQL.
+- `fs`: Modul sistem file Node.js.
+- `path`: Modul path Node.js.
+
+## Acknowledgements
+
+- [Node.js](https://nodejs.org/)
+- [MySQL](https://www.mysql.com/)
+- [mysql npm package](https://www.npmjs.com/package/mysql)
+
+# Docker Compose Setup for MariaDB, MySQL, and phpMyAdmin
+
+Repositori ini berisi pengaturan Docker Compose untuk menjalankan layanan MariaDB, MySQL, dan phpMyAdmin. Pengaturan ini memungkinkan Anda untuk mengelola beberapa instance database menggunakan antarmuka phpMyAdmin tunggal.
+
+## Prerequisites
+
+- Docker
+- Docker Compose
+
+## Services
+
+### MariaDB
+
+- **Image**: `mariadb:latest`
+- **Container Name**: `mariadb`
+- **Environment Variables**:
+  - `MYSQL_ROOT_PASSWORD`: Root password for MariaDB (`my_secret_password`)
+  - `MYSQL_DATABASE`: Default database (`app_db1`)
+  - `MYSQL_USER`: Database user (`db_user1`)
+  - `MYSQL_PASSWORD`: User password (`db_user_pass1`)
+- **Ports**: `3307:3306` (Host:Container)
+- **Volumes**: `mariadbdata:/var/lib/mysql`
+
+### MySQL
+
+- **Image**: `mysql:latest`
+- **Container Name**: `mysql`
+- **Command**: `--log-bin-trust-function-creators=1`
+- **Environment Variables**:
+  - `MYSQL_ROOT_PASSWORD`: Root password for MySQL (`my_secret_password`)
+  - `MYSQL_DATABASE`: Default database (`app_db2`)
+  - `MYSQL_USER`: Database user (`db_user2`)
+  - `MYSQL_PASSWORD`: User password (`db_user_pass2`)
+- **Ports**: `3308:3306` (Host:Container)
+- **Volumes**: `mysqldata:/var/lib/mysql`
+
+### phpMyAdmin
+
+- **Image**: `phpmyadmin/phpmyadmin`
+- **Container Name**: `phpmyadmin`
+- **Links**:
+  - `mariadb`
+  - `mysql`
+- **Environment Variables**:
+  - `PMA_HOSTS`: `mariadb,mysql`
+  - `PMA_PORT`: `3306`
+- **Ports**: `8080:80` (Host:Container)
+- **Restart Policy**: `always`
+
+## Volumes
+
+- `mariadbdata`: Digunakan untuk menyimpan data MariaDB secara persisten
+- `mysqldata`: Digunakan untuk menyimpan data MySQL secara persisten
+
+## Usage
+
+1. **Clone the repository**:
+
+   ```sh
+   git clone git@github.com:KuraoHikari/senior_high_school_mysql_db.git
+   cd senior_high_school_mysql_db
+   ```
+
+2. **Start the services**:
+
+   ```sh
+   docker-compose up -d
+   ```
+
+3. **Access phpMyAdmin**:
+   Open your web browser and go to `http://localhost:8080`. You can manage both MariaDB and MySQL databases from this interface.
+
+4. **Stop the services**:
+   ```sh
+   docker-compose down
+   ```
+
+## Notes
+
+- `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, dan `MYSQL_PASSWORD` harus diganti dengan nilai yang aman sebelum digunakan pada lingkungan produksi.
+- Pastikan port `3307`, `3308`, dan `8080` tersedia di mesin host Anda. Anda dapat menyesuaikan port di file `docker-compose.yml` jika diperlukan.
+
+## Troubleshooting
+
+- **Containers are not starting**: Check the Docker logs for more information.
+  ```sh
+  docker-compose logs
+  ```
+- **Ports are already in use**: Ensure the specified ports are not occupied by other services or change them in the `docker-compose.yml` file.
 
 # Tentang Penulis
 
