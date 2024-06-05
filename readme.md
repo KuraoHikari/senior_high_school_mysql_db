@@ -84,6 +84,7 @@
   - [Usage](#usage)
   - [Project Structure](#project-structure)
   - [Dependencies](#dependencies)
+  - [indexjs code](#indexjs_code)
   - [Acknowledgements](#acknowledgements)
 
 - [Tentang Penulis](#tentang-penulis)
@@ -1371,6 +1372,16 @@ Skrip Node.js ini terhubung ke database MySQL, mengambil semua tabel, dan mengek
 
 3. Skrip akan terhubung ke database MySQL, mengambil semua tabel, dan mengekspor data ke file JSON di direktori `jsonExport`.
 
+## Output
+
+Setelah skrip dijalankan:
+
+- Folder jsonExport akan dibuat dalam direktori yang sama dengan skrip jika belum ada.
+
+- Untuk setiap tabel dalam database, sebuah file JSON dengan nama <nama_tabel>.json akan dibuat di dalam folder jsonExport.
+
+- Data dari setiap tabel akan diexport ke dalam file JSON yang bersesuaian.
+
 ## Project Structure
 
 - `index.js`: File skrip utama yang menangani koneksi database dan ekspor data.
@@ -1381,6 +1392,51 @@ Skrip Node.js ini terhubung ke database MySQL, mengambil semua tabel, dan mengek
 - `mysql`: Driver Node.js untuk MySQL.
 - `fs`: Modul sistem file Node.js.
 - `path`: Modul path Node.js.
+
+## index.js code
+
+```js
+const mysql = require("mysql");
+const fs = require("fs");
+const path = require("path");
+
+const connection = mysql.createConnection({
+ host: "localhost",
+ user: "root",
+ password: "my_secret_password",
+ database: "senior_high_school",
+ port: 3307,
+});
+
+connection.connect((err) => {
+ if (err) throw err;
+ console.log("Connected!");
+
+ const dir = "./jsonExport";
+ if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+ }
+
+ // Get a list of all tables
+ connection.query("SHOW TABLES", (err, tables) => {
+  if (err) throw err;
+
+  // For each table, run a SELECT * query and write the results to a JSON file
+  tables.forEach((table) => {
+   const tableName = table[`Tables_in_${connection.config.database}`];
+   connection.query(`SELECT * FROM ${tableName}`, (err, results) => {
+    if (err) throw err;
+
+    const json_data = JSON.stringify(results, null, 2);
+    const filePath = path.join(dir, `${tableName}.json`);
+    fs.writeFileSync(filePath, json_data);
+    console.log(`JSON data has been written to ${filePath}`);
+   });
+  });
+  connection.end();
+ });
+});
+```
 
 ## Acknowledgements
 
