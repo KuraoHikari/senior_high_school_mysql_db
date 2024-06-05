@@ -76,6 +76,33 @@
   - [Membuat Procedure `InsertDataWithTransaction`](#membuat_procedure_insertdatawithtransaction)
   - [Menjalankan Procedure `InsertDataWithTransaction`](#menjalankan_procedure_insertdatawithtransaction)
 
+- [Procedure For Analyze Table](#procedure-for-analyze-table)
+  - [Query Overview Analyze Table](#query-overview-analyze-table)
+    - [Procedure: AnalyzeTable](#procedure-analyzetable)
+    - [Query Flow : AnalyzeTable](#query-flow-analyzetable)
+    - [Menjalankan Procedure `AnalyzeTable`](#menjalankan-procedure-analyzetable)
+- [Procedure For Check Table](#procedure-for-check-table)
+  - [Query Overview Check Table](#query-overview-check-table)
+    - [Procedure: CheckTable](#procedure-checktable)
+    - [Query Flow : CheckTable](#query-flow-checktable)
+    - [Menjalankan Procedure `CheckTable`](#menjalankan-procedure-checktable)
+- [Procedure For Optimize Table](#procedure-for-optimize-table)
+  - [Query Overview Optimize Table](#query-overview-optimize-table)
+    - [Procedure: OptimizeTable](#procedure-optimizetable)
+    - [Query Flow : OptimizeTable](#query-flow-optimizetable)
+    - [Menjalankan Procedure `OptimizeTable`](#menjalankan-procedure-optimizetable)
+- [Procedure For Repair Table](#procedure-for-repair-table)
+  - [Query Overview Repair Table](#query-overview-repair-table)
+    - [Procedure: RepairTable](#procedure-repairtable)
+    - [Query Flow : RepairTable](#query-flow-repairtable)
+    - [Menjalankan Procedure `RepairTable`](#menjalankan-procedure-repairtable)
+- [Procedure For Flush Table](#procedure-for-flush-table)
+
+  - [Query Overview Flush Table](#query-overview-flush-table)
+    - [Procedure: FlushTable](#procedure-flushtable)
+    - [Query Flow : FlushTable](#query-flow-flushtable)
+    - [Menjalankan Procedure `FlushTable`](#menjalankan-procedure-flushtable)
+
 - [MySQL to JSON Exporter](#mysql-to-json-exporter)
 
   - [Features](#features)
@@ -1311,10 +1338,249 @@ Prosedur InsertDataWithTransaction, melakukan langkah-langkah berikut:
 6. Melakukan commit transaksi.
 ```
 
-### Menjalankan Procedure `InsertDataWithTransaction`
+<!-- TOC --><a name="procedure-for-analyze-table"></a>
+
+# Procedure For Analyze Table
+
+File `18_procedure_for_analyze.sql` berisi skrip SQL untuk membuat prosedur yang menganalisis tabel dalam database MySQL.
+
+<!-- TOC --><a name="query-overview-analyze-table"></a>
+
+## Query Overview Analyze Table
+
+<!-- TOC --><a name="procedure-analyzetable"></a>
+
+### Procedure: AnalyzeTable
 
 ```sql
-CALL InsertDataWithTransaction();
+DELIMITER //
+
+CREATE PROCEDURE AnalyzeTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('ANALYZE TABLE ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+```
+
+<!-- TOC --><a name="query-flow-analyzetable"></a>
+
+### Query Flow : AnalyzeTable
+
+```
+1. Prosedur AnalyzeTable dibuat dengan satu parameter masukan, yaitu tableName yang merupakan nama tabel yang akan dianalisis.
+2. Di dalam prosedur, sebuah string SQL dibuat dengan menggabungkan 'ANALYZE TABLE ' dengan tableName. String ini disimpan dalam variabel @s.
+3. String SQL dalam @s kemudian dipersiapkan menjadi pernyataan yang dapat dieksekusi, dan disimpan dalam stmt.
+4. Pernyataan stmt kemudian dieksekusi. Ini akan menjalankan perintah 'ANALYZE TABLE' pada tabel yang ditentukan oleh tableName.
+5. Setelah pernyataan dieksekusi, stmt dibuang untuk membersihkan memori.
+```
+
+<!-- TOC --><a name="menjalankan-procedure-analyzetable"></a>
+
+### Menjalankan Procedure `AnalyzeTable`
+
+```sql
+CALL AnalyzeTable('nama_tabel_anda');
+```
+
+<!-- TOC --><a name="procedure-for-check-table"></a>
+
+# Procedure For Check Table
+
+File `19_procedure_for_check.sql` berisi skrip SQL untuk membuat prosedur yang memeriksa tabel dalam database MySQL.
+
+<!-- TOC --><a name="query-overview-check-table"></a>
+
+## Query Overview Check Table
+
+<!-- TOC --><a name="procedure-checktable"></a>
+
+### Procedure: CheckTable
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE CheckTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('CHECK TABLE ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+```
+
+<!-- TOC --><a name="query-flow-checktable"></a>
+
+### Query Flow : CheckTable
+
+```
+1. Prosedur CheckTable dibuat dengan satu parameter masukan, yaitu tableName yang merupakan nama tabel yang akan diperiksa.
+2. Di dalam prosedur, sebuah string SQL dibuat dengan menggabungkan 'CHECK TABLE ' dengan tableName. String ini disimpan dalam variabel @s.
+3. String SQL dalam @s kemudian dipersiapkan menjadi pernyataan yang dapat dieksekusi, dan disimpan dalam stmt.
+4. Pernyataan stmt kemudian dieksekusi. Ini akan menjalankan perintah 'CHECK TABLE' pada tabel yang ditentukan oleh tableName.
+5. Setelah pernyataan dieksekusi, stmt dibuang untuk membersihkan memori.
+```
+
+<!-- TOC --><a name="menjalankan-procedure-checktable"></a>
+
+### Menjalankan Procedure `CheckTable`
+
+```sql
+CALL CheckTable('nama_tabel_anda');
+```
+
+<!-- TOC --><a name="procedure-for-optimize-table"></a>
+
+# Procedure For Optimize Table
+
+File `20_procedure_for_optimize.sql` berisi skrip SQL untuk membuat prosedur yang mengoptimalkan tabel dalam database MySQL.
+
+<!-- TOC --><a name="query-overview-optimize-table"></a>
+
+## Query Overview Optimize Table
+
+<!-- TOC --><a name="procedure-optimizetable"></a>
+
+### Procedure: OptimizeTable
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE OptimizeTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('OPTIMIZE TABLE ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+```
+
+<!-- TOC --><a name="query-flow-optimizetable"></a>
+
+### Query Flow : OptimizeTable
+
+```
+1. Prosedur OptimizeTable dibuat dengan satu parameter masukan, yaitu tableName yang merupakan nama tabel yang akan dioptimalkan.
+2. Di dalam prosedur, sebuah string SQL dibuat dengan menggabungkan 'OPTIMIZE TABLE ' dengan tableName. String ini disimpan dalam variabel @s.
+3. String SQL dalam @s kemudian dipersiapkan menjadi pernyataan yang dapat dieksekusi, dan disimpan dalam stmt.
+4. Pernyataan stmt kemudian dieksekusi. Ini akan menjalankan perintah 'OPTIMIZE TABLE' pada tabel yang ditentukan oleh tableName.
+5. Setelah pernyataan dieksekusi, stmt dibuang untuk membersihkan memori.
+
+```
+
+<!-- TOC --><a name="menjalankan-procedure-optimizetable"></a>
+
+### Menjalankan Procedure `OptimizeTable`
+
+```sql
+CALL OptimizeTable('nama_tabel_anda');
+```
+
+<!-- TOC --><a name="procedure-for-repair-table"></a>
+
+# Procedure For Repair Table
+
+File `21_procedure_for_repair.sql` berisi skrip SQL untuk membuat prosedur yang memperbaiki tabel dalam database MySQL.
+
+<!-- TOC --><a name="query-overview-repair-table"></a>
+
+## Query Overview Repair Table
+
+<!-- TOC --><a name="procedure-repairtable"></a>
+
+### Procedure: RepairTable
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE RepairTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('REPAIR TABLE ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+```
+
+<!-- TOC --><a name="query-flow-repairtable"></a>
+
+### Query Flow : RepairTable
+
+```
+1. Prosedur RepairTable dibuat dengan satu parameter masukan, yaitu tableName yang merupakan nama tabel yang akan diperbaiki.
+2. Di dalam prosedur, sebuah string SQL dibuat dengan menggabungkan 'REPAIR TABLE ' dengan tableName. String ini disimpan dalam variabel @s.
+3. String SQL dalam @s kemudian dipersiapkan menjadi pernyataan yang dapat dieksekusi, dan disimpan dalam stmt.
+4. Pernyataan stmt kemudian dieksekusi. Ini akan menjalankan perintah 'REPAIR TABLE' pada tabel yang ditentukan oleh tableName.
+5. Setelah pernyataan dieksekusi, stmt dibuang untuk membersihkan memori.
+
+```
+
+<!-- TOC --><a name="menjalankan-procedure-repairtable"></a>
+
+### Menjalankan Procedure `RepairTable`
+
+```sql
+CALL RepairTable('nama_tabel_anda');
+
+```
+
+<!-- TOC --><a name="procedure-for-flush-table"></a>
+
+# Procedure For Flush Table
+
+File `22_procedure_for_flush.sql` berisi skrip SQL untuk membuat prosedur yang memperbaiki tabel dalam database MySQL.
+
+<!-- TOC --><a name="query-overview-flush-table"></a>
+
+## Query Overview Flush Table
+
+<!-- TOC --><a name="procedure-flushtable"></a>
+
+### Procedure: FlushTable
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE FlushTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('FLUSH TABLES ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
+```
+
+<!-- TOC --><a name="query-flow-flushtable"></a>
+
+### Query Flow : FlushTable
+
+```
+1. Prosedur FlushTable dibuat dengan satu parameter masukan, yaitu tableName yang merupakan nama tabel yang akan di-flush.
+2. Di dalam prosedur, sebuah string SQL dibuat dengan menggabungkan 'FLUSH TABLES ' dengan tableName. String ini disimpan dalam variabel @s.
+3. String SQL dalam @s kemudian dipersiapkan menjadi pernyataan yang dapat dieksekusi, dan disimpan dalam stmt.
+4. Pernyataan stmt kemudian dieksekusi. Ini akan menjalankan perintah 'FLUSH TABLES' pada tabel yang ditentukan oleh tableName.
+5. Setelah pernyataan dieksekusi, stmt dibuang untuk membersihkan memori.
+
+```
+
+<!-- TOC --><a name="menjalankan-procedure-flushtable"></a>
+
+### Menjalankan Procedure `FlushTable`
+
+```sql
+CALL FlushTable('nama_tabel_anda');
+
 ```
 
 # MySQL to JSON Exporter
