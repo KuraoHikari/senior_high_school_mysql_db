@@ -1,0 +1,11 @@
+DELIMITER //
+
+CREATE PROCEDURE RepairTable(IN tableName VARCHAR(255))
+BEGIN
+    SET @s = CONCAT('REPAIR TABLE ', tableName);
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+END //
+
+DELIMITER ;
